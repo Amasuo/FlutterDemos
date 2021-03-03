@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:test_ui/productDetails/main.dart';
 import 'sideMenuDemo/main.dart';
 import 'sliverAppBarDemo/main.dart';
 
@@ -9,6 +10,7 @@ void main() {
       '/': (context) => MyApp(),
       '/sidemenudemo': (context) => SideMenuDemo(),
       '/sliverappbardemo': (context) => SliverAppBarDemo(),
+      '/productdetailsdemo': (context) => ProductDetailsDemo(),
     },
   ));
 }
@@ -32,6 +34,13 @@ class MyApp extends StatelessWidget {
               onPressed: () {
                 // Navigate to the second screen using a named route.
                 Navigator.pushNamed(context, '/sliverappbardemo');
+              },
+            ),
+            ElevatedButton(
+              child: Text('ProductDetails Demo'),
+              onPressed: () {
+                // Navigate to the second screen using a named route.
+                Navigator.pushNamed(context, '/productdetailsdemo');
               },
             ),
           ],
