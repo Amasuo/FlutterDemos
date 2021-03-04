@@ -3,14 +3,15 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:test_ui/productDetails/details.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
-import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart'
-as extended;
-
+import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart' as extended;
+import 'package:customizable_space_bar/customizable_space_bar.dart';
 
 class ProductDetailsDemo extends StatefulWidget {
   @override
   _ProductDetailsDemoState createState() => _ProductDetailsDemoState();
 }
+
+enum MenuOption{item1, item2, item3}
 
 class _ProductDetailsDemoState extends State<ProductDetailsDemo> with TickerProviderStateMixin{
   ScrollController _scrollController;
@@ -58,45 +59,109 @@ class _ProductDetailsDemoState extends State<ProductDetailsDemo> with TickerProv
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled){
             return [
               SliverAppBar(
+                actions: [
+                  if(!_scrolling)
+                    PopupMenuButton(
+                        itemBuilder: (BuildContext context){
+                          return <PopupMenuEntry<MenuOption>>[
+                            PopupMenuItem(
+                              child: Text('item1'),
+                              value: MenuOption.item1,
+                            ),
+                            PopupMenuItem(
+                              child: Text('item2'),
+                              value: MenuOption.item2,
+                            ),
+                            PopupMenuItem(
+                              child: Text('item3'),
+                              value: MenuOption.item3,
+                            ),
+                          ];
+                        }
+                    ),
+                  if (_scrolling)
+                  IconButton(
+                    icon: Icon(Icons.search),
+                    onPressed: (){
+
+                    },
+                  ),
+                  if (_scrolling)
+                  IconButton(
+                      icon: Icon(Icons.share_outlined),
+                      onPressed: (){
+
+                      }
+                  ),
+                  if (_scrolling)
+                  IconButton(
+                      icon: Icon(Icons.star_border_outlined),
+                      onPressed: (){
+
+                      }
+                  ),
+                ],
                 expandedHeight: 150,
                 pinned: true,
-                floating: true,
-                backgroundColor: Colors.white,
-                title: !_scrolling?
-                    ImageFiltered(
-                      imageFilter: ImageFilter.blur(sigmaX: 40),
-                      child: Image.asset('assets/images/store.png',fit: BoxFit.cover),
-                    )
-                    :null ,
-                flexibleSpace: FlexibleSpaceBar(
-                  title: _scrolling? Align(
-                    alignment: Alignment.bottomLeft,
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 65,
-                          height: 65,
-                          child: Image.asset('assets/images/store.png',fit: BoxFit.cover),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(3, 0, 0, 0),
-                          child: Text('Title'),
-                        )
-                      ],
-                    ),
-                  ):null ,
-                  background: ImageFiltered(
-                    imageFilter: ImageFilter.blur(sigmaX: 40),
-                    child: Container(
-                      decoration: new BoxDecoration(
-                        image: new DecorationImage(
-                          image: new AssetImage('assets/images/store.png'),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
+                  iconTheme: IconThemeData(
+                    color: Colors.white, //change your color here
                   ),
-                ),
+                  backgroundColor: Colors.white,
+                flexibleSpace: CustomizableSpaceBar(
+                  builder: (context, scrollingRate){
+                   return Stack(
+                     children: [
+                       ImageFiltered(
+                         imageFilter: ImageFilter.blur(sigmaX: 40),
+                         child: Container(
+                           decoration: new BoxDecoration(
+                             image: new DecorationImage(
+                               image: new AssetImage('assets/images/store.png'),
+                               fit: BoxFit.cover,
+                             ),
+                           ),
+                         ),
+                       ),
+                       _scrolling? Align(
+                             alignment: FractionalOffset.bottomLeft,
+                             child: Container(
+                               width: 130,
+                               height: 100,
+                               child: Padding(
+                                 child: Image.asset('assets/images/store.png',fit: BoxFit.cover),
+                                 padding: EdgeInsets.only(left: 20.0),
+                               ),
+                             ),
+                       ): Container(),
+                       _scrolling?Positioned(
+                         bottom: 30,
+                         left: 150,
+                         child: Column(
+                           mainAxisAlignment: MainAxisAlignment.start,
+                           crossAxisAlignment: CrossAxisAlignment.start,
+                           children: [
+                             Padding(
+                               padding: EdgeInsets.only(bottom: 5),
+                               child: Text('Title',style: TextStyle(color: Colors.white),),
+                             ),
+                             Padding(
+                               padding: EdgeInsets.only(bottom: 5),
+                               child: Text('tags',style: TextStyle(color: Colors.grey),),
+                             ),
+                             Padding(
+                               padding: EdgeInsets.only(bottom: 5),
+                               child: Text('description',style: TextStyle(color: Colors.white),),
+                             ),
+                           ],
+                         ),
+                       ): Align(
+                         child: Text('Title',style: TextStyle(color: Colors.white),),
+                         alignment: Alignment.center,
+                       ),
+                     ],
+                   );
+                  },
+                )
               ),
             ];
           },

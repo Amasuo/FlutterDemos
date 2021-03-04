@@ -23,6 +23,7 @@ environment:
 dependencies:
   flutter_easyrefresh: ^2.1.8
   extended_nested_scroll_view: ^2.0.1
+  customizable_space_bar: ^0.1.0
   flutter:
     sdk: flutter
 
